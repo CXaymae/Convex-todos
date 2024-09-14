@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { NewToDoForm } from "./_components/new-todo-form";
 
 type ToDoItem = {
   title: string;
@@ -14,59 +15,52 @@ export default function Home() {
     { title: "Clean the house", description: "Kitchen, bathroom, bedroom", completed: false },
     { title: "Workout", description: "Push-ups, crunches, burpees", completed: false },
   ]);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-
-  const handleSubmit = (e: React.FormEvent<HTMLElement>) => {
-    e.preventDefault();
-    setTodos(prev => {
-      const newTodos = [...prev];
-      newTodos.push({ title, description, completed: false });
-      return newTodos;
-    });
-    setTitle("");
-    setDescription("");
-  };
 
   return (
     <div className="max-w-screen-md mx-auto p-4">
       <h1 className="text-xl font-bold">To Do List</h1>
       <ul>
         {todos.map(({ title, description, completed }, index) => (
-          <li key={index}>
-            <input
-              type="checkbox"
-              checked={completed}
-              onChange={e => setTodos(prev => {
+          <ToDoItem 
+            key={index}
+            title={title} 
+            description={description} 
+            complete={completed}
+            onCompleteChanged={(newValue) => {
+              setTodos(prev => {
                 const newTodos = [...prev];
-                newTodos[index] = { ...newTodos[index], completed: e.target.checked };
+                newTodos[index].completed = newValue;
                 return newTodos;
-              })}
-            />
-            <span className="font-semibold">{title}</span>
-            {description}
-          </li>
+              });
+            }}
+          />
         ))}
       </ul>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="title">Title</label>
-        <input
-          type="text"
-          name="title"
-          id="title"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-        />
-        <label htmlFor="description">Description</label>
-        <input
-          type="text"
-          name="description"
-          id="description"
-          value={description}
-          onChange={e => setDescription(e.target.value)}
-        />
-        <button type="submit">Create</button>
-      </form>
+      <NewToDoForm onCreate={(title, description) => {
+        setTodos(prev => {
+          const newTodos = [...prev];
+          newTodos.push({ title, description, completed: false });
+          return newTodos;
+        });
+      }} />
     </div>
+  );
+}
+
+function ToDoItem({ title, description, complete, onCompleteChanged }: {
+  title: string; 
+  description: string; 
+  complete: boolean; 
+  onCompleteChanged: (newValue: boolean) => void;
+}) {
+  return (
+    <li>
+      <input
+        type="checkbox"
+        checked={complete}
+        onChange={e => onCompleteChanged(e.target.checked)}
+      />
+      <span className="font-semibold">{title}</span> - {description}
+    </li>
   );
 }
