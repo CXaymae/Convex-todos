@@ -20,23 +20,27 @@ export function NewToDoForm({onCreate}: ToDoFormProps) {
 
     return (       
       <form onSubmit={handleSubmit}>
-      <label htmlFor="title">Title</label>
+        <div className="flex feex-col gap-2">
+      <label className="text-sm" htmlFor="title">Title</label>
       <input
+      className="p-1 border rounded"
         type="text"
         name="title"
         id="title"
         value={title}
         onChange={e => setTitle(e.target.value)}
       />
-      <label htmlFor="description">Description</label>
+      <label className="text-sm font-semibold" htmlFor="description">Description</label>
       <input
+      className="p-1 border rounded"
         type="text"
         name="description"
         id="description"
         value={description}
         onChange={e => setDescription(e.target.value)}
       />
-      <button type="submit">Create</button>
+      <button className="bg-blue-500 rounded text-white" type="submit">Create</button>
+      </div>
     </form>
     )
 }

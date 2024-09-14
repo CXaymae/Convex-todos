@@ -17,9 +17,9 @@ export default function Home() {
   ]);
 
   return (
-    <div className="max-w-screen-md mx-auto p-4">
+    <div className="max-w-screen-md mx-auto p-4 space-y-4">
       <h1 className="text-xl font-bold">To Do List</h1>
-      <ul>
+      <ul className="space-y-2">
         {todos.map(({ title, description, completed }, index) => (
           <ToDoItem 
             key={index}
@@ -32,6 +32,10 @@ export default function Home() {
                 newTodos[index].completed = newValue;
                 return newTodos;
               });
+            }}
+            onRemove={() => {
+              setTodos(prev => 
+                prev.filter((_, i) => i!== index));
             }}
           />
         ))}
@@ -47,20 +51,28 @@ export default function Home() {
   );
 }
 
-function ToDoItem({ title, description, complete, onCompleteChanged }: {
+function ToDoItem({ title, description, complete, onCompleteChanged, onRemove }: {
   title: string; 
   description: string; 
   complete: boolean; 
   onCompleteChanged: (newValue: boolean) => void;
+  onRemove: () => void;
 }) {
   return (
-    <li>
+    <li className="w-full items-center flex gap-2 border rounded p-2">
       <input
         type="checkbox"
         checked={complete}
         onChange={e => onCompleteChanged(e.target.checked)}
       />
-      <span className="font-semibold">{title}</span> - {description}
+
+      <div>
+      <p className="font-semibold">{title}</p> 
+      <p className="text-sm text-gray-00">{description}</p>
+      </div>
+      <div className="ml-auto">
+        <button type="button" className="text-red-500" onClick={() => onRemove()}>Remove</button>
+      </div>
     </li>
   );
 }
