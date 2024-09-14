@@ -9,7 +9,11 @@ type ToDoItem = {
 }
 
 export default function Home() {
-  const [todos, setTodos] = useState<ToDoItem[]>([]);
+  const [todos, setTodos] = useState<ToDoItem[]>([
+    { title: "Buy groceries", description: "Milk, eggs, bread", completed: true },
+    { title: "Clean the house", description: "Kitchen, bathroom, bedroom", completed: false },
+    { title: "Workout", description: "Push-ups, crunches, burpees", completed: false },
+  ]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
